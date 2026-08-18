@@ -5,6 +5,7 @@ package com.mycompany.assignment4_2;
 
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.Locale;
 
 /**
  *
@@ -12,10 +13,12 @@ import java.util.Scanner;
  */
 public class Assignment4_2 {
 
-    static Scanner in = new Scanner(System.in);
+    static Scanner in = new Scanner(System.in).useLocale(Locale.US);
+    
 
     public static String validateName() {
         System.out.print("Enter Your full Name: ");
+        in.nextLine();
         String fullName = in.nextLine();
         if (fullName.isEmpty()) {
             System.out.println("Name cannot be empty");
@@ -23,11 +26,12 @@ public class Assignment4_2 {
         } else {
             return fullName;
         }
-
+         
     }
 
     public static int validateNationalId(Customer[] customer) {
         while (true) {
+            
             System.out.print("Enter Your National ID: ");
             int id = in.nextInt();
             boolean exist = false;
@@ -48,8 +52,8 @@ public class Assignment4_2 {
     public static String validatePhoneNumber() {
 
         while (true) {
-
-            System.out.print("Enter 7-15 digits: ");
+            
+            System.out.print("Enter 7-15 digits-phone Number: ");
             String phone = in.next();
 
             // Check length
@@ -81,7 +85,7 @@ public class Assignment4_2 {
     public static void addcustomer(Customer[] customer) {
       //  System.out.print("Enter Your name: ");
         String fullName = validateName();
-        in.nextLine();
+       
        // System.out.print("Enter National id: ");
         int nationalId = validateNationalId(customer);
         //System.out.print("Enter Your Phone Number: ");
@@ -207,7 +211,7 @@ public class Assignment4_2 {
         boolean found = false;
         System.out.print("Enter Account Id: ");
         int accountId = in.nextInt();
-        System.out.print("Enter withdraw Amount:  ");
+        System.out.print("Enter Deposite Amount:  ");
         double amount = in.nextDouble();
         if (!found) {
             for (int i = 0; i < saving.length; i++) {
@@ -308,7 +312,7 @@ public class Assignment4_2 {
         System.out.println("Account ID does not exist ");
     }
     
-    public static int validateaccount(SavingAccount[] saving,CurrentAccount[] current,FixedDepositeAccount[] fixed)
+    public static Account validateaccount(SavingAccount[] saving,CurrentAccount[] current,FixedDepositeAccount[] fixed)
     {
         System.out.print("enter account number");
         int id=in.nextInt();
@@ -316,16 +320,29 @@ public class Assignment4_2 {
         for (int i = 0; i < saving.length; i++) {
             if(saving[i]!=null&&saving[i].getAccountId()==id)
             {
-                exist=true;
-                break;
+                return saving[i];
+                
             }
         }
-        if(exist)
-            return id;
-        else{
-         System.out.println("This account number does not exist");
-        return -1;}
+        for (int i = 0; i < current.length; i++) {
+            if(current[i]!=null&&current[i].getAccountId()==id)
+            {
+                return current[i];
+            }
+        }
+        for (int i = 0; i < fixed.length; i++) {
+            if(fixed[i]!=null&&fixed[i].getAccountId()==id)
+            {
+                return fixed[i];
+            }
+        }
+        
+        
+        System.out.println("This account does not exist");
+        return null;
+        
     }
+
     public static void TransverBetweenAccount(SavingAccount[] saving,CurrentAccount[] current,FixedDepositeAccount[] fixed)
     {
        
@@ -382,7 +399,170 @@ public class Assignment4_2 {
         }
     }        
     
+    public static void displayBranchAccounts(SavingAccount[] saving,CurrentAccount[] current,FixedDepositeAccount[] fixed)
+    {
+       for(SavingAccount acc:saving)
+       {
+           if(acc!=null){
+           System.out.println(acc.getAccountId());
+           System.out.println(acc.getBalance());
+           System.out.println(acc.getStatus());
+           
+       }
+       }
+       for(CurrentAccount acc:current)
+       {
+           if(acc!=null){
+           System.out.println(acc.getAccountId());
+           System.out.println(acc.getBalance());
+           System.out.println(acc.getStatus());
+           
+       }
+       }
+       for(FixedDepositeAccount acc:fixed)
+       {
+           if(acc!=null){
+           System.out.println(acc.getAccountId());
+           System.out.println(acc.getBalance());
+           System.out.println(acc.getStatus());
+           
+       }
+       }
+    }
 
+    public static void searchAccountByid(SavingAccount[] saving,CurrentAccount[] current,FixedDepositeAccount[] fixed)
+    {
+      boolean isfound=false;
+        System.out.print("Enter Account Number: ");
+        int accountid=in.nextInt();
+        
+        if(!isfound)
+        {
+          for(SavingAccount acc:saving)
+          {
+            if(acc!=null&&acc.getAccountId()==accountid)
+            {
+              System.out.println("Account found in Savings!");
+                System.out.println(acc.getBalance());
+                System.out.println(acc.getStatus());
+                isfound=true;
+                break;
+            }
+          }
+        }
+        if(!isfound)
+        {
+          for(CurrentAccount acc:current)
+          {
+            if(acc!=null&&acc.getAccountId()==accountid)
+            {
+              System.out.println("Account found in current!");
+                System.out.println(acc.getBalance());
+                System.out.println(acc.getStatus());
+                isfound=true;
+                break;
+            }
+          }
+        }
+        if(!isfound)
+        {
+          for(FixedDepositeAccount acc:fixed)
+          {
+            if(acc!=null&&acc.getAccountId()==accountid)
+            {
+              System.out.println("Account found in Fixed!");
+                System.out.println(acc.getBalance());
+                System.out.println(acc.getStatus());
+                isfound=true;
+                break;
+            }
+          }
+        }
+        
+         if(!isfound) {
+    	        System.out.println("This Acount Is not exist");
+    		}
+    }
+    
+    public static void searchAccountByType(SavingAccount[] saving,CurrentAccount[] current,FixedDepositeAccount[] fixed)
+    {
+        System.out.println("1.Saving Account");
+        System.out.println("2.Current Account");
+        System.out.println("3.Fixed Account");
+        System.out.print("choose an account type : ");
+        int choice=in.nextInt();
+        
+        switch(choice)
+        {
+            case 1:
+                for(SavingAccount acc:saving)
+                {
+                    System.out.println(acc.getAccountId());
+                    System.out.println(acc.getBalance());
+                    System.out.println(acc.getStatus());
+                    System.out.println(acc.getSuccessfultransaction());
+                    System.out.println("Saving Account");
+                }
+                break;
+            case 2:
+                 for(CurrentAccount acc:current)
+                {
+                    System.out.println(acc.getAccountId());
+                    System.out.println(acc.getBalance());
+                    System.out.println(acc.getStatus());
+                    System.out.println(acc.getSuccessfultransaction());
+                    System.out.println("Current Account");
+                }
+                break;
+            case 3:
+                for(FixedDepositeAccount acc:fixed)
+                {
+                    System.out.println(acc.getAccountId());
+                    System.out.println(acc.getBalance());
+                    System.out.println(acc.getStatus());
+                    System.out.println(acc.getSuccessfultransaction());
+                    System.out.println("Fixed Account");
+                }
+            break;
+        }
+    }
+    
+    public static void closeAccount(SavingAccount[] saving,CurrentAccount[] current,FixedDepositeAccount[] fixed)
+    {
+      Account acc=validateaccount(saving, current, fixed);
+      if(acc.getStatus()==AccountStatus.CLOSED)
+      {
+          System.out.println("The account is already closed");
+          return;
+      }
+      if(acc.getBalance()!=0)
+      {
+          System.out.println("Account cannot be closed.");
+        System.out.println("Balance must be exactly $0.");
+        return;
+      }
+      
+      if(acc instanceof FixedDepositeAccount)
+      {
+        FixedDepositeAccount fd = (FixedDepositeAccount) acc;
+        if(fd.getPassedMonths()<fd.getMonths())
+        {
+            System.out.println("Fixed Account can not be closed because its not reach for its mutraity");
+            return;
+        }
+        
+      }
+      
+      acc.setStatus(AccountStatus.CLOSED);
+      Customer cust=acc.getCustomer();
+      if(cust!=null)
+      {
+        cust.setCustomerId(cust.getCustomerId()-1);
+      }
+      
+       System.out.println("Account closed successfully.");
+    }
+    
     public static void showMenu() {
         System.out.println("1.Register new Customer");
         System.out.println("2.Open New account");
@@ -432,6 +612,18 @@ public class Assignment4_2 {
                     break;
                 case 6:
                     displayCustomerAccount(customer,savingAccount, currentaccount, fixed);
+                    break;
+                case 7:
+                    displayBranchAccounts(savingAccount, currentaccount, fixed);
+                    break;
+                case 8:
+                    searchAccountByid(savingAccount, currentaccount, fixed);
+                    break;
+                case 9:
+                    searchAccountByType(savingAccount, currentaccount, fixed);
+                    break;
+                case 10:
+                    closeAccount(savingAccount, currentaccount, fixed);
                     break;
                 case 0:
                     break All;

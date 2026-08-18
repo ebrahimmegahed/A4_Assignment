@@ -36,6 +36,11 @@ public class Customer {
         this.fullName = fullName;
     }
 
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+   
     public String getPhoneNumber() {
         return phoneNumber;
     }

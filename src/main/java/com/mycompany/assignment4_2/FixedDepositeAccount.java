@@ -77,6 +77,10 @@ public class FixedDepositeAccount extends Account{
         
        System.out.println("current Balance= "+(super.getBalance()-amount)+" Deposite= "+amount+" New Balance= "+result);
     }
+
+    public int getPassedMonths() {
+        return passedMonths;
+    }
     
     
     
